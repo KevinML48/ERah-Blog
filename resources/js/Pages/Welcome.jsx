@@ -1,6 +1,13 @@
 import { Head, Link } from '@inertiajs/react';
-import Header from '../Components/Header';
-import Hello from '../Components/Hello';
+import ButtonGradient from '../Components/assets/svg/ButtonGradient';
+import Benefits from '../Components/Home-Composants/Benefits';
+import Collaboration from '../Components/Home-Composants/Collaboration';
+import Footer from '../Components/Home-Composants/Footer';
+import Header from '../Components/Home-Composants/Header';
+import Hero from '../Components/Home-Composants/Hero';
+import Pricing from '../Components/Home-Composants/Pricing';
+import Roadmap from '../Components/Home-Composants/Roadmap';
+import Services from '../Components/Home-Composants/Services';
 
 export default function Welcome({ auth }) {
     const handleImageError = () => {
@@ -13,30 +20,17 @@ export default function Welcome({ auth }) {
     return (
         <>
             <Head title="Welcome" />
-            <div>
+            <div className="pt-[4.75rem] lg:pt-[5.25rem] overflow-hidden">
                 <Header />
-                <div>
-                    <div>
-                        <nav>
-                            {auth.user ? (
-                                <Link href={route('dashboard')}>
-                                    Dashboard
-                                </Link>
-                            ) : (
-                                <>
-                                    <Link href={route('login')}>
-                                        Log in
-                                    </Link>
-                                    <Link href={route('register')}>
-                                        Register
-                                    </Link>
-                                </>
-                            )}
-                        </nav>
-                    </div>
-                </div>
-                <Hello />
+                <Hero />
+                <Benefits />
+                <Collaboration />
+                <Services />
+                <Pricing />
+                <Roadmap />
+                <Footer />
             </div>
+            <ButtonGradient />
         </>
     );
 }
