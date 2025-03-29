@@ -23,6 +23,6 @@ class DashboardController extends Controller
                     'permissions' => $user->getAllPermissions()->pluck('name')->toArray(),
                 ]
             ]
-        ]);
+        ]);        
     }
 }

@@ -1,4 +1,4 @@
-import { Head, Link } from '@inertiajs/react';
+import { Head } from '@inertiajs/react';
 import ButtonGradient from '../Components/assets/svg/ButtonGradient';
 import Benefits from '../Components/Home-Composants/Benefits';
 import Collaboration from '../Components/Home-Composants/Collaboration';
@@ -21,7 +21,8 @@ export default function Welcome({ auth }) {
         <>
             <Head title="Welcome" />
             <div className="pt-[4.75rem] lg:pt-[5.25rem] overflow-hidden">
-                <Header />
+                {/* Passe la prop auth à Header */}
+                <Header user={auth.user} />
                 <Hero />
                 <Benefits />
                 <Collaboration />
