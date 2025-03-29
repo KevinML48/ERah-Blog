@@ -1,14 +1,17 @@
 import { useLocation } from "react-router-dom";
 import { disablePageScroll, enablePageScroll } from "scroll-lock";
 import brainwave from "../assets/hero/logo_sans_texte.png";
-import { navigation } from "../constants";
+import { getNavigation } from "../constants";
 import MenuSvg from "../assets/svg/MenuSvg";
-import { HamburgerMenu } from "../design/Header";
+import { HamburgerMenu, ButtonStyle } from "../design/Header";
 import { useState } from "react";
 
 const Header = ({ user }) => {
     const pathname = useLocation();
     const [openNavigation, setOpenNavigation] = useState(false);
+    const isLoggedIn = !!user;
+    const isAdmin = user?.is_admin;
+    const navigation = getNavigation(isLoggedIn, isAdmin);
 
     const toggleNavigation = () => {
         if (openNavigation) {
@@ -40,75 +43,59 @@ const Header = ({ user }) => {
                     <img
                         src={brainwave}
                         width={60}
-                        height={40}
+                        height={50}
                         alt="Brainwave"
                     />
                     <span className="ml-2 font-bold text-lg">ERAH ESPORT</span>
                 </a>
 
-                <nav
-                    className={`${
-                        openNavigation ? "flex" : "hidden"
-                    } fixed top-[5rem] left-0 right-0 bottom-0 bg-n-8 lg:static lg:flex lg:mx-auto lg:bg-transparent`}
-                >
-                    <div className="relative z-2 flex flex-col items-center justify-center m-auto lg:flex-row">
-                        {navigation.map((item) => (
-                            <a
-                                key={item.id}
-                                href={item.url}
-                                onClick={handleClick}
-                                className={`block relative font-code text-2xl uppercase text-n-1 transition-colors hover:text-color-1 ${
-                                    item.onlyMobile ? "lg:hidden" : ""
-                                } px-6 py-6 md:py-8 lg:-mr-0.25 lg:text-xs lg:font-semibold ${
-                                    item.url === pathname.hash
-                                        ? "z-2 lg:text-n-1"
-                                        : "lg:text-n-1/50"
-                                } lg:leading-5 lg:hover:text-n-1 xl:px-12`}
-                            >
-                                {item.title}
-                            </a>
-                        ))}
-                    </div>
-
-                    <HamburgerMenu />
-                </nav>
-
-                {user ? (
-    <>
-
-{user.is_admin && (
-  <a
-    href="/dashboard"
-    className="button hidden mr-8 text-n-1/50 transition-colors hover:text-n-1 lg:block"
-  >
-      Dashboard
-  </a>
-)}
-
-<a
-  href="/profile"
-  className="hidden lg:flex px-5 py-2.5 text-black bg-white rounded-lg transition-all ease-in duration-75 border border-white hover:bg-transparent hover:text-white"
->
-    Mon Profil
-</a>
-
-    </>
-                ) : (
-                    <>
+                {/* Navigation pour desktop */}
+                <nav className="hidden lg:flex mx-auto">
+                    {navigation.filter(item => !item.onlyMobile).map((item) => (
                         <a
-                            href="/register"
+                            key={item.id}
+                            href={item.url}
                             className="button hidden mr-8 text-n-1/50 transition-colors hover:text-n-1 lg:block"
                         >
-                            Nouveau compte
+                            {item.title}
                         </a>
-                        <a
-                            href="/login"
-                            className="hidden lg:flex px-5 py-2.5 text-black bg-white rounded-lg transition-all ease-in duration-75 border border-white hover:bg-transparent hover:text-white"
-                        >
-                            Connexion
-                        </a>
-                    </>
-                )}
+                    ))}
+                </nav>
+
+                {/* Navigation pour mobile */}
+                <div className={`${openNavigation ? 'flex' : 'hidden'} lg:hidden fixed inset-0 top-[5rem] bg-n-8`}>
+                    <HamburgerMenu user={user} onNavigate={handleClick} />
+                </div>
+
+                <div className="hidden lg:flex items-center">
+                    {isLoggedIn ? (
+                        <>
+                            {isAdmin && (
+  <a
+  href="/dashboard"
+  className="button hidden mr-8 text-n-1/50 transition-colors hover:text-n-1 lg:block"
+>
+    Dashboard
+</a>
+                            )}
+                            <ButtonStyle href="/profile">
+                                Mon Profil
+                            </ButtonStyle>
+                        </>
+                    ) : (
+                        <>
+  <a
+     href="/register"
+     className="button hidden mr-8 text-n-1/50 transition-colors hover:text-n-1 lg:block"
+   >
+       Nouveau compte
+   </a>
+                            <ButtonStyle href="/login">
+                                Connexion
+                            </ButtonStyle>
+                        </>
+                    )}
+                </div>
 
                 <button
                     className="ml-auto lg:hidden px-3"

@@ -36,7 +36,7 @@ import {
   yourlogo,
 } from "../assets";
 
-export const navigation = [
+export const getNavigation = (isLoggedIn, isAdmin) => [
   {
     id: "0",
     title: "Features",
@@ -57,18 +57,39 @@ export const navigation = [
     title: "Roadmap",
     url: "#roadmap",
   },
-  {
-    id: "4",
-    title: "New account",
-    url: "#signup",
-    onlyMobile: true,
-  },
-  {
-    id: "5",
-    title: "Sign in",
-    url: "#login",
-    onlyMobile: true,
-  },
+  ...(isLoggedIn
+    ? [
+        {
+          id: "4",
+          title: "Mon Profil",
+          url: "/profile",
+          onlyMobile: true,
+        },
+        ...(isAdmin
+          ? [
+              {
+                id: "5",
+                title: "Dashboard",
+                url: "/dashboard",
+                onlyMobile: true,
+              },
+            ]
+          : []),
+      ]
+    : [
+        {
+          id: "4",
+          title: "New account",
+          url: "/register",
+          onlyMobile: true,
+        },
+        {
+          id: "5",
+          title: "Sign in",
+          url: "/login",
+          onlyMobile: true,
+        },
+      ]),
 ];
 
 export const heroIcons = [homeSmile, file02, searchMd, plusSquare];

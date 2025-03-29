@@ -1,4 +1,5 @@
 import { background } from "../assets";
+import { getNavigation } from "../constants";
 
 export const Rings = () => {
   return (
@@ -28,9 +29,13 @@ export const BackgroundCircles = () => {
   );
 };
 
-export const HamburgerMenu = () => {
+export const HamburgerMenu = ({ user, onNavigate }) => {
+  const isLoggedIn = !!user;
+  const isAdmin = user?.is_admin;
+  const navigation = getNavigation(isLoggedIn, isAdmin);
+
   return (
-    <div className="absolute inset-0 pointer-events-none lg:hidden">
+    <div className="absolute inset-0 lg:hidden">
       <div className="absolute inset-0 opacity-[.03]">
         <img
           className="w-full h-full object-cover"
@@ -42,10 +47,30 @@ export const HamburgerMenu = () => {
       </div>
 
       <Rings />
-
       <SideLines />
-
       <BackgroundCircles />
+
+      <nav className="relative z-10 flex flex-col items-center justify-center h-full">
+        {navigation.map((item) => (
+          <a
+            key={item.id}
+            href={item.url}
+            onClick={() => onNavigate && onNavigate()}
+            className="py-2 text-2xl text-white hover:text-gray-300 transition-colors"
+          >
+            {item.title}
+          </a>
+        ))}
+      </nav>
     </div>
   );
 };
+
+export const ButtonStyle = ({ href, children }) => (
+  <a
+    href={href}
+    className="hidden lg:flex px-4 py-2 text-sm text-black bg-white rounded-md transition-all ease-in duration-75 border border-white hover:bg-transparent hover:text-white"
+  >
+    {children}
+  </a>
+);
