@@ -72,7 +72,7 @@ const Header = ({ user }) => {
                         <>
                             {isAdmin && (
   <a
-  href="/dashboard"
+  href="/admin/dashboard"
   className="button hidden mr-8 text-n-1/50 transition-colors hover:text-n-1 lg:block"
 >
     Dashboard
