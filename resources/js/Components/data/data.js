@@ -2,17 +2,18 @@ import { iconsImgs } from "../utils/images";
 import { personsImgs } from "../utils/images";
 
 export const navigationLinks = [
-    { id: 1, title: 'Home', image: iconsImgs.home },
-    { id: 2, title: 'Budget', image: iconsImgs.budget },
-    { id: 3, title: 'Transactions', image: iconsImgs.plane },
-    { id: 4, title: 'Subscriptions', image: iconsImgs.wallet },
-    { id: 5, title: 'Loans', image: iconsImgs.bills },
-    { id: 6, title: 'Reports', image: iconsImgs.report },
-    { id: 7, title: 'Savings', image: iconsImgs.wallet },
-    { id: 8, title: 'Financial Advice', image: iconsImgs.wealth },
-    { id: 9, title: 'Account', image: iconsImgs.user },
-    { id: 10, title: 'Settings', image: iconsImgs.gears }
+    { id: 1, title: "Home", image: iconsImgs.home, path: "/" },
+    { id: 2, title: "Budget", image: iconsImgs.budget, path: "/budget" },
+    { id: 3, title: "Transactions", image: iconsImgs.plane, path: "/transactions" },
+    { id: 4, title: "Subscriptions", image: iconsImgs.wallet, path: "/subscriptions" },
+    { id: 5, title: "Loans", image: iconsImgs.bills, path: "/loans" },
+    { id: 6, title: "Reports", image: iconsImgs.report, path: "/reports" },
+    { id: 7, title: "Savings", image: iconsImgs.wallet, path: "/savings" },
+    { id: 8, title: "Financial Advice", image: iconsImgs.wealth, path: "/advice" },
+    { id: 9, title: "Settings", image: iconsImgs.gears, path: "/profile" },
+    { id: 10, title: "Logout", image: iconsImgs.user, actionType: "logout" } // Ajout ici
 ];
+
 
 export const transactions = [
     {
