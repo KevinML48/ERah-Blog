@@ -5,6 +5,8 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\BlogController;
+use App\Http\Controllers\CommentController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -24,6 +26,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
 Route::prefix('admin')->middleware(['auth', 'verified', 'role:admin'])->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::resource('/blogs', BlogController::class)->except(['show']);
+
+    Route::post('/blogs/{blog}/comments', [CommentController::class, 'store'])->name('comments.store');
+    Route::patch('/comments/{comment}', [CommentController::class, 'update'])->name('comments.update');
+    Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
 });
 
 require __DIR__.'/auth.php';

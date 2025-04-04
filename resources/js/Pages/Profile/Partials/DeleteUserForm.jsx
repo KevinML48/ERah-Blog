@@ -5,6 +5,7 @@ import Modal from '@/Components/Modal';
 import SecondaryButton from '@/Components/SecondaryButton';
 import TextInput from '@/Components/TextInput';
 import { useForm } from '@inertiajs/react';
+import { Inertia } from '@inertiajs/inertia';
 import { useRef, useState } from 'react';
 
 export default function DeleteUserForm({ className = '' }) {
@@ -45,6 +46,10 @@ export default function DeleteUserForm({ className = '' }) {
         reset();
     };
 
+    const handleLogout = () => {
+        Inertia.post(route('logout'));
+    };
+
     return (
         <section className={`space-y-6 ${className}`}>
             <header>
@@ -60,9 +65,18 @@ export default function DeleteUserForm({ className = '' }) {
                 </p>
             </header>
 
-            <DangerButton onClick={confirmUserDeletion}>
-                Delete Account
-            </DangerButton>
+            <div className="flex items-center gap-4">
+                <DangerButton onClick={confirmUserDeletion}>
+                    Delete Account
+                </DangerButton>
+
+                <SecondaryButton
+                    onClick={handleLogout}
+                    className="text-red-600 hover:text-red-800"
+                >
+                    Logout
+                </SecondaryButton>
+            </div>
 
             <Modal show={confirmingUserDeletion} onClose={closeModal}>
                 <form onSubmit={deleteUser} className="p-6">

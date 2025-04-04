@@ -12,15 +12,29 @@ class DatabaseSeeder extends Seeder
 {
     public function run()
     {
+        // Réinitialiser le cache des permissions
+        app()->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
+
+        // Créer les permissions nécessaires
+        $permissions = [
+            'create blogs',
+            'edit blogs',
+            'delete blogs',
+            'read blogs',
+            'manage comments',
+        ];
+
+        foreach ($permissions as $permission) {
+            Permission::firstOrCreate(['name' => $permission]);
+        }
+
         // Créer les rôles
         $adminRole = Role::firstOrCreate(['name' => 'admin']);
         $userRole = Role::firstOrCreate(['name' => 'user']);
 
-        // Créer les permissions
-        $editArticlesPermission = Permission::firstOrCreate(['name' => 'edit articles']);
-
-        // Attribuer les permissions aux rôles
-        $adminRole->givePermissionTo($editArticlesPermission);
+        // Assigner les permissions aux rôles
+        $adminRole->syncPermissions($permissions); // L'admin a toutes les permissions
+        $userRole->syncPermissions(['read blogs']); // L'utilisateur normal peut seulement lire les blogs
 
         // Créer l'utilisateur Admin
         $admin = User::firstOrCreate(
@@ -44,6 +58,7 @@ class DatabaseSeeder extends Seeder
         );
         $user->assignRole($userRole);
 
+        // Afficher un message dans la console
         $this->command->info('Les utilisateurs Admin et User ont été créés avec succès !');
     }
 }
